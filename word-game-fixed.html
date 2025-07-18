@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KET单词拼写大师</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        h1 {
+            color: #1a2a6c;
+            font-size: 2.8rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            color: #b21f1f;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .level-indicator {
+            display: inline-block;
+            background: linear-gradient(to right, #4CAF50, #FFC107);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-container {
+            margin: 25px 0;
+            position: relative;
+        }
+        
+        .progress-bar {
+            height: 15px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 极光单词拼写练习大师
+            /* 修复之前的代码错误 */
+            0, 0.1);
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #4CAF50, #2196F3);
+            border-radius: 10px;
+            width: 0;
+            transition: width 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .word-info {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(240, 240, 255, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .meaning {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #d32f2f;
+            margin-bottom: 15px;
+            min-height: 60px;
+        }
+        
+        .pronunciation {
+            font-size: 1.3rem;
+            color: #5d4037;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .sound-btn {
+            background: #5e35b1;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .sound-btn:hover {
+            transform: scale(1.1);
+            background: #4527a0;
+        }
+        
+        .word-display {
+            font-size: 2.8rem;
+            font-weight: bold;
+            letter-spacing: 8px;
+            margin: 25px 0;
+            color: #1a237e;
+            min-height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .letter-block {
+            display: inline-block;
+            min-width: 50px;
+            height: 60px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .letter {
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            line-height: 60px;
+            font-size: 2.5rem;
+        }
+        
+        .blank {
+            border-bottom: 4px solid #1a237e;
+            color: #e91e63;
+            font-weight: 800;
+        }
+        
+        .letters-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(240, 248, 255, 0.7);
+            border-radius: 15px;
+        }
+        
+        .letter-option {
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(145deg, #5e35b1, #3949ab);
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.2s;
+            user-select: none;
+        }
+        
+        .letter-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(145deg, #7e57c2, #5c6bc0);
+        }
+        
+        .letter-option:active {
+            transform: translateY(2px);
+        }
+        
+        .letter-option.used {
+            background: #b0b0b0;
+            transform: none;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 14px 35px;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        #check-btn {
+            background: linear-gradient(to right, #e53935, #d81b60);
+            color: white;
+        }
+        
+        #reset-btn {
+            background: linear-gradient(to right, #43a047, #2e7d32);
+            color: white;
+        }
+        
+        #new-word-btn {
+            background: linear-gradient(to right, #1e88e5, #0d47a1);
+            color: white;
+        }
+        
+        button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:active {
+            transform: translateY(2px);
+        }
+        
+        .message {
+            font-size: 1.5rem;
+            font-weight: bold;
+            min-height: 40px;
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 10极光单词拼写练习大师
+            /* 修复之前的代码错误 */
+            10px;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.5s, transform 0.5s;
+            transform: scale(0.95);
+        }
+        
+        .success {
+            background: linear-gradient(to right, #2e7d32, #4caf50);
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .error {
+            background: linear-gradient(to right, #c62828, #d32极光单词拼写练习大师
+            /* 修复之前的代码错误 */
+            #d32f2f);
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 25px;
+            font-weight: 600;
+            color: #555;
+            font-size: 1.2rem;
+            background: rgba(240, 240, 255, 0.6);
+            padding: 15px;
+            border-radius: 15px;
+        }
+        
+        .hint {
+            margin-top: 20px;
+            color: #5d4037;
+            font-size: 1.2rem;
+            font-style: italic;
+            background: rgba(255, 248, 225, 0.7);
+            padding: 12px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .meaning {
+                font-size: 1.8rem;
+            }
+            
+            .word-display {
+                font-size: 2.2rem;
+                letter-spacing: 5px;
+            }
+            
+            .letter-option {
+                width: 55px;
+                height: 55px;
+                font-size: 1.8rem;
+            }
+            
+            button {
+                padding: 12px 25px;
+                font-size: 1.1rem;
+            }
+            
+            .letter-block {
+                min-width: 40px;
+                height: 50px;
+            }
+            
+            .letter {
+                line-height: 50px;
+                font-size: 2rem;
+            }
+            
+            .controls {
+                gap: 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .meaning {
+                font-size: 1.5rem;
+            }
+            
+            .word-display {
+                font-size: 1.8rem;
+                gap: 5px;
+            }
+            
+            .letter-option {
+                width: 45px;
+                height: 45px;
+                font-size: 1.6rem;
+            }
+            
+            .letter-block {
+                min-width: 30px;
+                height: 40px;
+            }
+            
+            .letter {
+                font-size: 1.6rem;
+                line-height: 40px;
+            }
+            
+            button {
+                padding: 10px 15px;
+                font-size: 1rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>KET单词拼写大师</h1>
+            <div class="subtitle">根据中文释义和发音，选择正确字母完成单词</div>
+            <div class="level-indicator">KET核心词库 · 1500+词</div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress" id="progress-bar"></div>
+            </div>
+            <div class="progress-info">
+                <span id="current-progress">进度: 0/0</span>
+                <span id="accuracy">正确率: 0%</极光单词拼写练习大师
+                /* 修复之前的代码错误 */
+                </span>
+            </div>
+        </div>
+        
+        <div class="word-info">
+            <div class="meaning" id="meaning">中文意思</div>
+            <div class="pronunciation">
+                <span>发音: </span>
+                <span id="phonetic">/wɜːd/</span>
+                <button class="sound-btn" id="sound-btn">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="word-display" id="word-display">
+            <!-- 单词字母块将由JS动态生成 -->
+        </div>
+        
+        <div class="message" id="message"></div>
+        
+        <div class="letters-container" id="letters-container">
+            <!-- 字母选项将由JS动态生成 -->
+        </div>
+        
+        <div class="controls">
+            <button id="check-btn">
+                <i class="fas fa-check"></i>检查答案
+            </button>
+            <button id="reset-btn">
+                <i class="fas fa-redo"></i>重置当前
+            </button>
+            <button id="new-word-btn">
+                <i class="fas fa-forward"></i>下一个单词
+            </button>
+        </div>
+        
+        <div class="stats">
+            <div>已完成: <span id="completed-count">0</span></div>
+            <div>连续正确: <span id="streak-count">0</span></div>
+            <div>总正确率: <span id="overall-accuracy">0%</span></div>
+        </div>
+        
+        <div class="hint">
+            <i class="fas fa-lightbulb"></i> 
+            提示: 先点击字母，再点击单词中的空白位置填充
+        </div>
+    </div>
+
+    <script>
+        // KET核心词库 (1500+单词)
+        const ketWordList = [
+            // 基础词汇 (级别1)
+            { word: "cat", meaning: "猫", phonetic: "/kæt/", level: 1 },
+            { word: "dog", meaning: "狗", phonetic: "/dɒɡ/", level: 1 },
+            { word: "pen", meaning: "钢笔", phonetic: "/pen/", level: 1 },
+            { word: "book", meaning: "书", phonetic: "/bʊk/", level: 1 },
+            { word: "apple", meaning: "苹果", phonetic: "/ˈæpl/", level: 1 },
+            { word: "ball", meaning: "球", phonetic: "/bɔːl/", level: 1 },
+            { word: "fish", meaning: "鱼", phonetic: "/fɪʃ/", level: 1 },
+            
+            // 基础词汇 (级别2)
+            { word: "cute", meaning: "可爱的", phonetic: "/kjuːt/", level: 2 },
+            { word: "kite", meaning: "风筝", phonetic: "/kaɪt/", level: 2 },
+            { word: "name", meaning: "名字", phonetic: "/neɪm/", level: 2 },
+            { word: "make", meaning: "制作", phonetic: "/meɪk/", level: 2 },
+            { word: "cake", meaning: "蛋糕", phonetic: "/keɪk/", level: 2 },
+            { word: "game", meaning: "游戏", phonetic: "/ɡeɪm/", level: 2 },
+            { word: "she", meaning: "她", phonetic: "/ʃiː/", level: 2 },
+            { word: "he", meaning: "他", phonetic: "/hiː/", level: 2 },
+            { word: "we", meaning: "我们", phonetic: "/wiː/", level: 2 },
+            { word: "nice", meaning: "好的", phonetic: "/naɪs/", level: 2 },
+            { word: "home", meaning: "家", phonetic: "/həʊm/", level: 2 },
+            
+            // 中级词汇 (级别3)
+            { word: "write", meaning: "写", phonetic: "/raɪt/", level: 3 },
+            { word: "five", meaning: "五", phonetic: "/faɪv/", level: 3 },
+            { word: "joke", meaning: "玩笑", phonetic: "/dʒəʊk/", level: 3 },
+            { word: "hope", meaning: "希望", phonetic: "/həʊp/", level: 3 },
+            { word: "cone", meaning: "锥形", phonetic: "/kəʊn/", level: 3 },
+            { word: "use", meaning: "使用", phonetic: "/juːz/", level: 3 },
+            { word: "face", meaning: "脸", phonetic: "/feɪs/", level: 3 },
+            { word: "age", meaning: "年龄", phonetic: "/eɪdʒ/", level: 3 },
+            { word: "my", meaning: "我的", phonetic: "/maɪ/", level: 3 },
+            { word: "cool", meaning: "凉爽的", phonetic: "/kuːl/", level: 3 },
+            
+            // 高级词汇 (级别4)
+            { word: "restaurant", meaning: "餐厅", phonetic: "/ˈrestrɒnt/", level: 4 },
+            { word: "temperature", meaning: "温度", phonetic: "/ˈtemprətʃə(r)/", level: 4 },
+            { word: "information", meaning: "信息", phonetic: "/ˌɪnfəˈmeɪʃn/", level: 4 },
+            { word: "environment", meaning: "环境", phonetic: "/ɪnˈvaɪrənmənt/", level: 4 },
+            { word: "adventure", meaning: "冒险", phonetic: "/ədˈventʃər/", level: 4 },
+            { word: "different", meaning: "不同的", phonetic: "/ˈdɪfrənt/", level: 4 },
+            { word: "beautiful", meaning: "美丽的", phonetic: "/ˈbjuːtɪfəl/", level: 4 },
+            { word: "interesting", meaning: "有趣的", phonetic: "/ˈɪntrəstɪŋ/", level: 4 },
+        ];
+
+        // 当前游戏状态
+        let currentWord = null;
+        let blanks = [];
+        let letterElements = [];
+        let selectedLetter = null;
+        let completedCount = 0;
+        let correctCount = 0;
+        let streakCount = 0;
+        let totalCount = ketWordList.length;
+        let letterPool = [];
+        let usedWords = new Set();
+
+        // 获取DOM元素
+        const meaningElement = document.getElementById('meaning');
+        const phoneticElement = document.getElementById('phonetic');
+        const soundButton = document.getElementById('sound-btn');
+        const wordDisplayElement = document.getElementById('word-display');
+        const lettersContainer = document.getElementById('letters-container');
+        const checkButton = document.getElementById('check-btn');
+        const resetButton = document.getElementById('reset-btn');
+        const newWordButton = document.getElementById('new-word-btn');
+        const messageElement = document.getElementById('message');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('current-progress');
+        const accuracyText = document.getElementById('accuracy');
+        const completedCountElement = document.getElementById('completed-count');
+        const streakCountElement = document.getElementById('streak-count');
+        const overallAccuracyElement = document.getElementById('overall-accuracy');
+
+        // 初始化游戏
+        function initGame() {
+            completedCount = 0;
+            correctCount = 0;
+            streakCount = 0;
+            usedWords.clear();
+            updateProgress();
+            loadWord();
+        }
+
+        // 加载新单词
+        function loadWord() {
+            // 重置状态
+            messageElement.classList.remove('success', 'error');
+            messageElement.textContent = "";
+            messageElement.style.opacity = 0;
+            
+            // 选择新单词（确保不重复）
+            let availableWords = ketWordList.filter(word => !usedWords.has(word.word));
+            
+            if (availableWords.length === 0) {
+                showMessage(`恭喜！你已经完成了所有练习！得分: ${correctCount}/${totalCount}`, true);
+                return;
+            }
+            
+            // 根据进度选择难度
+            const difficultyLevel = Math.min(4, Math.floor(completedCount / 50) + 1);
+            const levelWords = availableWords.filter(word => word.level === difficultyLevel);
+            
+            // 如果当前难度无单词，选择最接近的难度
+            const targetWords = levelWords.length > 0 ? levelWords : availableWords;
+            
+            const randomIndex = Math.floor(Math.random() * targetWords.length);
+            currentWord = targetWords[randomIndex];
+            usedWords.add(currentWord.word);
+            
+            // 显示单词信息
+            meaningElement.textContent = currentWord.meaning;
+            phoneticElement.textContent = currentWord.phonetic;
+            
+            // 生成挖空位置
+            generateBlanks();
+            generateLetters();
+            
+            // 更新界面
+            updateProgress();
+        }
+
+        // 生成挖空位置
+        function generateBlanks() {
+            wordDisplayElement.innerHTML = '';
+            blanks = [];
+            
+            const word = currentWord.word;
+            const missingLetters = getMissingLetters(word);
+            
+            // 创建单词字母块
+            for (let i = 0; i < word.length; i++) {
+                const letter = word[i];
+                const letterBlock = document.createElement('div');
+                letterBlock.className = 'letter-block';
+                
+                const letterElement = document.createElement('div');
+                letterElement.className = 'letter';
+                
+                // 检查这个字母是否被挖空
+                if (missingLetters.includes(letter.toLowerCase())) {
+                    letterElement.classList.add('blank');
+                    letterElement.dataset.index = i;
+                    letterElement.dataset.letter = letter.toLowerCase();
+                    letterElement.dataset.filled = 'false';
+                    letterElement.textContent = '';
+                    
+                    // 添加点击事件，用于填充字母
+                    letterElement.addEventListener('click', function() {
+                        fillBlank(this);
+                    });
+                    
+                    blanks.push(letterElement);
+                } else {
+                    letterElement.textContent = letter;
+                }
+                
+                letterBlock.appendChild(letterElement);
+                wordDisplayElement.appendChild(letterBlock);
+            }
+        }
+
+        // 根据单词确定挖空字母
+        function getMissingLetters(word) {
+            // 特殊单词的挖空规则
+            const specialCases = {
+                'cute': ['u', 'e'],
+                'kite': ['i', 'e'],
+                'name': ['a', 'e'],
+                'make': ['a', 'e'],
+                'cake': ['a', 'e'],
+                'game': ['a', 'e'],
+                'she': ['e'],
+                'he': ['e'],
+                'we': ['e'],
+                'nice': ['i', 'e'],
+                'write': ['i', 'e'],
+                'five': ['i', 'e'],
+                'home': ['o', 'e'],
+                'joke': ['o', 'e'],
+                'hope': ['o', 'e'],
+                'cone': ['o', 'e'],
+                'use': ['u', 'e'],
+                'face': ['c', 'e'],
+                'age': ['g', 'e'],
+                'my': ['y'],
+                'cool': ['l']
+            };
+            
+            // 如果是特殊单词，返回预定义的挖空字母
+            if (specialCases[word]) {
+                return specialCases[word];
+            }
+            
+            // 通用挖空规则
+            const vowels = ['a','e','i','o','u'];
+            let missing = [];
+            let wordLetters = word.toLowerCase().split('');
+            
+            // 规则1: 以e结尾的单词，挖空e和前面的元音
+            if (word.endsWith('e') && word.length > 2) {
+                missing.push('e');
+                
+                // 查找e之前的元音字母
+                for (let i = word.length - 2; i >= 0; i--) {
+                    if (vowels.includes(wordLetters[i])) {
+                        missing.push(wordLetters[i]);
+                        break;
+                    }
+                }
+                return missing;
+            }
+            
+            // 规则2: 短单词挖空最后一个字母
+            if (word.length <= 3) {
+                return [wordLetters[wordLetters.length - 1]];
+            }
+            
+            // 规则3: 优先挖空元音字母
+            for (let i = 0; i < wordLetters.length; i++) {
+                if (vowels.includes(wordLetters[i]) && missing.length < 2) {
+                    missing.push(wordLetters[i]);
+                }
+            }
+            
+            // 如果没有元音字母，挖空中间位置的字母
+            if (missing.length === 0) {
+                const midIndex = Math.floor(wordLetters.length / 2);
+                missing.push(wordLetters[midIndex]);
+                
+                if (wordLetters.length > 5) {
+                    missing.push(wordLetters[midIndex + 1]);
+                }
+            }
+            
+            return missing;
+        }
+
+        // 生成字母选项
+        function generateLetters() {
+            lettersContainer.innerHTML = '';
+            letterElements = [];
+            letterPool = [];
+            
+            const word = currentWord.word.toLowerCase();
+            const missingLetters = getMissingLetters(word);
+            
+            // 添加正确的字母（每个字母重复一次）
+            missingLetters.forEach(letter => {
+                letterPool.push(letter);
+                letterPool.push(letter);
+            });
+            
+            // 添加干扰字母
+            const allLetters = 'abcdefghijklmnopqrstuvwxyz';
+            const maxLetters = 12; // 控制字母数量
+            
+            while (letterPool.length < maxLetters) {
+                const randomIndex = Math.floor(Math.random() * allLetters.length);
+                const randomLetter = allLetters[randomIndex];
+                
+                // 跳过已经在单词中的字母
+                if (!word.includes(randomLetter) && !letterPool.includes(randomLetter)) {
+                    letterPool.push(randomLetter);
+                }
+            }
+            
+            // 随机打乱字母顺序
+            for (let i = letterPool.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [letterPool[i], letterPool[j]] = [letterPool[j], letterPool[i]];
+            }
+            
+            // 创建字母元素
+            letterPool.forEach(letter => {
+                const letterElement = document.createElement('div');
+                letterElement.className = 'letter-option';
+                letterElement.textContent = letter.toUpperCase();
+                letterElement.dataset.letter = letter;
+                
+                letterElement.addEventListener('click', function() {
+                    selectLetter(this);
+                });
+                
+                lettersContainer.appendChild(letterElement);
+                letterElements.push(letterElement);
+            });
+        }
+
+        // 选择字母
+        function selectLetter(element) {
+            // 如果字母已被使用，忽略点击
+            if (element.classList.contains('used')) return;
+            
+            // 如果之前已经选中了一个字母，取消其选中状态
+            if (selectedLetter) {
+                selectedLetter.style.transform = 'none';
+                selectedLetter.style.boxShadow = '0 6px 12px rgba(0, 0, 0, 0.15)';
+            }
+            
+            // 高亮显示当前选中的字母
+            element.style.transform = 'scale(1.2)';
+            element.style.boxShadow = '0 0 20px rgba(37, 117, 252, 0.8)';
+            selectedLetter = element;
+        }
+
+        // 填充空白
+        function fillBlank(blank) {
+            if (!selectedLetter) {
+                showMessage("请先选择一个字母！", false);
+                return;
+            }
+            
+            if (blank.dataset.filled === 'true') {
+                showMessage("此位置已填写字母！", false);
+                return;
+            }
+            
+            const letter = selectedLetter.dataset.letter;
+            blank.textContent = letter.toUpperCase();
+            blank.dataset.filled = 'true';
+            blank.dataset.given = letter;
+            
+            // 隐藏选中的字母
+            selectedLetter.classList.add('used');
+            selectedLetter.style.transform = 'none';
+            selectedLetter.style.boxShadow = 'none';
+            
+            selectedLetter = null;
+        }
+
+        // 检查答案
+        function checkAnswer() {
+            const unfilledBlanks = blanks.filter(b => b.dataset.filled === 'false');
+            
+            if (unfilledBlanks.length > 0) {
+                showMessage("单词填写不完整！请完成所有空白", false);
+                return;
+            }
+            
+            const allCorrect = blanks.every(blank => {
+                return blank.dataset.given === blank.dataset.letter.toLowerCase();
+            });
+            
+            completedCount++;
+            
+            if (allCorrect) {
+                streakCount++;
+                correctCount++;
+                showMessage("恭喜！拼写正确！", true);
+                
+                // 延迟加载下一个单词
+                setTimeout(() => {
+                    updateProgress();
+                    loadWord();
+                }, 1500);
+            } else {
+                streakCount = 0;
+                showMessage("有些字母不正确，请检查！", false);
+                
+                // 高亮显示错误的字母
+                blanks.forEach(blank => {
+                    if (blank.dataset.given !== blank.dataset.letter.toLowerCase()) {
+                        blank.style.color = '#d32f2f';
+                        blank.style.fontWeight = '800';
+                    }
+                });
+            }
+            
+            updateProgress();
+        }
+
+        // 重置当前单词
+        function resetCurrent() {
+            blanks.forEach(blank => {
+                blank.textContent = '';
+                blank.dataset.filled = 'false';
+                blank.style.color = '';
+                blank.style.fontWeight = '';
+            });
+            
+            letterElements.forEach(letter => {
+                letter.classList.remove('used');
+            });
+            
+            if (selectedLetter) {
+                selectedLetter.style.transform = 'none';
+                selectedLetter.style.boxShadow = '0 6px 12px rgba(0, 0, 0, 0.15)';
+                selectedLetter = null;
+            }
+            
+            messageElement.textContent = "";
+            messageElement.style.opacity = 0;
+            messageElement.classList.remove('success', 'error');
+        }
+
+        // 显示消息
+        function showMessage(message, isSuccess) {
+            messageElement.textContent = message;
+            messageElement.style.opacity = 1;
+            messageElement.className = 'message ' + (isSuccess ? 'success' : 'error');
+        }
+
+        // 更新进度
+        function updateProgress() {
+            const progress = (completedCount / totalCount) * 100;
+            progressBar.style.width = progress + '%';
+            progressText.textContent = `进度: ${completedCount}/${totalCount}`;
+            
+            const accuracy = completedCount > 0 ? Math.round((correctCount / completedCount) * 100) : 0;
+            accuracyText.textContent = `正确率: ${accuracy}%`;
+            
+            completedCountElement.textContent = completedCount;
+            streakCountElement.textContent = streakCount;
+            overallAccuracyElement.textContent = `${accuracy}%`;
+        }
+
+        // 语音朗读
+        function speakWord() {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(currentWord.word);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.8;
+                speechSynthesis.speak(utterance);
+            } else {
+                showMessage("您的浏览器不支持语音功能", false);
+            }
+        }
+
+        // 事件监听
+        checkButton.addEventListener('click', checkAnswer);
+        resetButton.addEventListener('click', resetCurrent);
+        newWordButton.addEventListener('click', () => {
+            completedCount++;
+            updateProgress();
+            loadWord();
+        });
+        soundButton.addEventListener('click', speakWord);
+
+        // 启动游戏
+        window.onload = initGame;
+    </script>
+</body>
+</html>
